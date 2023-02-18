@@ -1,0 +1,49 @@
+---
+- name: Set Files Permissions to g+w
+  shell: find var vendor pub/static pub/media app/etc -type f -exec chmod g+w {} \;
+  args:
+    chdir: "{{ magento_dir }}"
+  changed_when: false
+
+- name: Set Directories Permissions to g+ws
+  shell: find var vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} \;
+  args:
+    chdir: "{{ magento_dir }}"
+  changed_when: false
+
+- name: Set Files and Directories Group User
+  file:
+    dest: "{{ magento_dir }}"
+    group: www-data
+    recurse: yes
+  changed_when: false
+
+- name: Set Permission u+x to bin/magento
+  file:
+    path: "{{ magento_dir }}/bin/magento"
+    mode: u+x
+  changed_when: false
+
+- name: Create pub/media/import directory if it does not exist
+  become: true
+  become_user: magento
+  file:
+    path: /home/magento/Sites/tienda/pub/media/import
+    state: directory
+    mode: "0755"
+
+- name: Create var/import directory if it does not exist
+  become: true
+  become_user: magento
+  file:
+    path: /home/magento/Sites/tienda/var/import
+    state: directory
+    mode: "0755"
+
+- name: Create Import Images Symbolic Link
+  file:
+    src: /home/magento/Sites/tienda/pub/media/import
+    dest: /home/magento/Sites/tienda/var/import/images
+    owner: magento
+    group: www-data
+    state: link

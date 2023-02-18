@@ -1,0 +1,57 @@
+---
+- name: Add PHP Repository from PPA
+  apt_repository:
+    repo: "ppa:ondrej/php"
+    codename: focal
+
+- name: Install PHP {{ php_version }} and Magento PHP Dependencies
+  become: true
+  become_method: sudo
+  apt:
+    name:
+      [
+        "php{{ php_version }}",
+        "php{{ php_version }}-fpm",
+        "php{{ php_version }}-bcmath",
+        "php{{ php_version }}-cli",
+        "php{{ php_version }}-curl",
+        "php{{ php_version }}-dom",
+        "php{{ php_version }}-gd",
+        "php{{ php_version }}-iconv",
+        "php{{ php_version }}-intl",
+        "php{{ php_version }}-mbstring",
+        "php{{ php_version }}-mysql",
+        "php{{ php_version }}-simplexml",
+        "php{{ php_version }}-soap",
+        "php{{ php_version }}-opcache",
+        "php{{ php_version }}-xsl",
+        "php{{ php_version }}-zip",
+      ]
+    state: present
+
+- name: Replace Unix User/Group of processes at fpm/pool.d/www.conf
+  replace:
+    path: /etc/php/{{ php_version }}/fpm/pool.d/www.conf
+    regexp: "^(.*)user = www-data(.*)$"
+    replace: "user = magento"
+    backup: yes
+
+- name: Configure cli/php.ini file
+  lineinfile:
+    path: "{{ php_cli_ini_path }}"
+    regexp: "{{ item.parameter }} ="
+    line: "{{ item.parameter }} = {{ item.value }}"
+    backup: yes
+  with_items: "{{ php_cli_ini_parameters_and_values }}"
+
+- name: Configure fpm/php.ini file
+  lineinfile:
+    path: "{{ php_fpm_ini_path }}"
+    regexp: "{{ item.parameter }} ="
+    line: "{{ item.parameter }} = {{ item.value }}"
+    backup: yes
+  with_items: "{{ php_fpm_ini_parameters_and_values }}"
+
+- name: Start PHP {{ php_version }} Service
+  command: sudo service php{{ php_version }}-fpm start
+  changed_when: false

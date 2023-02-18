@@ -1,0 +1,43 @@
+---
+- name: Update Repository and Full-Upgrade Packages
+  become: true
+  become_method: sudo
+  apt:
+    # upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400 # one day
+    # autoclean: yes
+    # autoremove: yes
+
+- name: Set Server Timezone to {{ timezone }}
+  timezone:
+    name: "{{ timezone }}"
+
+- name: Create a directory if it does not exist
+  become: true
+  become_user: magento
+  file:
+    path: /home/magento/Sites
+    state: directory
+    mode: "0755"
+
+- name: Install libzip-dev
+  # become: true
+  # become_method: sudo
+  apt:
+    name: libzip-dev
+    # install_recommends: no
+
+- name: Install unzip
+  # become: true
+  # become_method: sudo
+  apt:
+    name: unzip
+    install_recommends: no
+
+- name: Install zlib1g-dev
+  # become: true
+  # become_method: sudo
+  apt:
+    name: zlib1g-dev
+    install_recommends: no

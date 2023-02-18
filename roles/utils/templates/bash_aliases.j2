@@ -1,0 +1,40 @@
+# WSL2
+alias open='explorer.exe `wslpath -w "$PWD"`'
+
+# Vars
+WEBSERVER_GROUP="www-data"
+
+# Magento
+alias m2="bin/magento"
+alias m2rmgen="find var/generation -maxdepth 1 -mindepth 1 -type d -not -name 'Magento' -not -name 'Composer' -not -name 'Symfony' -exec rm -rf {} \;"
+alias m2en="m2 module:enable"
+alias m2s="m2 module:status"
+
+# Setup
+alias m2up="m2 setup:upgrade && m2 setup:di:compile && m2 cache:flush"
+# alias m2static="sudo rm -rf var/view_preprocessed/* pub/static/frontend/* pub/static/adminhtml/* pub/static/_requirejs/*"
+
+# Cache
+alias m2cf="m2 cache:flush"
+alias m2cc="m2 cache:clean"
+
+# Permissions
+alias m2fixgroup="sudo usermod -aG $WEBSERVER_GROUP $(whoami)"
+alias m2fixperms="sudo chown -R $(whoami):$WEBSERVER_GROUP . && sudo chmod 777 var pub generated"
+alias m2perm="find var vendor pub/static pub/media app/etc -type f -exec chmod g+w {} \; && find var vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} \; && chown -R :$WEBSERVER_GROUP . && chmod u+x bin/magento"
+alias m2perm_sudo="sudo find var vendor pub/static pub/media app/etc -type f -exec chmod g+w {} \; && sudo find var vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} \; && sudo chown -R :$WEBSERVER_GROUP . && sudo chmod u+x bin/magento"
+
+# Tools
+alias phpcs="php ./vendor/bin/phpcs --standard=Magento2"
+alias phpcbf="php ./vendor/bin/phpcbf --standard=Magento2"
+alias _phpmd='php ./vendor/bin/phpmd'
+phpmd() { _phpmd "$1" text cleancode,dev/tests/static/testsuite/Magento/Test/Php/_files/phpmd/ruleset.xml; }
+mkcd() { mkdir -p -- "$1" && cd -P -- "$1"; }
+
+# Testing
+alias phpunit="php ./vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist"
+
+# Others
+alias m2tail="tail -f -n 0 var/log/*.log /var/log/nginx/error.log"
+alias upgcc='m2 setup:upgrade && m2 setup:static-content:deploy -f --area="frontend" es_PE --theme THEME/THEME && m2 setup:static-content:deploy -f --area="adminhtml" && m2 c:f'
+alias m2static='m2 setup:static-content:deploy -f --area="frontend" es_PE --theme THEME/THEME && m2 setup:static-content:deploy -f --area="adminhtml" && m2 c:f'

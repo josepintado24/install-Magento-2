@@ -1,0 +1,20 @@
+---
+- name: Download n98-magerun Installer
+  get_url:
+    url: https://files.magerun.net/n98-magerun2.phar
+    dest: /tmp/n98-magerun2.phar
+    mode: 0755
+
+- name: Move Executable File to /user/local/bin
+  command: mv n98-magerun2.phar /usr/local/bin/n98-magerun2
+  args:
+    chdir: /tmp/
+  changed_when: false
+
+- name: Create Symbolic Link
+  file:
+    src: /usr/local/bin/n98-magerun2
+    dest: /usr/bin/n98-magerun2
+    owner: root
+    group: root
+    state: link

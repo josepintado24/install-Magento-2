@@ -1,0 +1,71 @@
+---
+# Server configuration
+timezone: America/Lima
+
+# Package version
+php_version: 7.4 
+# php_version: 8.1 
+mysql_version: 8.0
+
+
+# Magento
+magento_dir: /home/magento/Sites/tienda
+
+# Database configuration
+db_host: localhost
+db_name: magento
+db_user: admin
+db_password: admin
+
+# Elasticsearch configuration
+elasticsearch_version: "7.x"
+elasticsearch_network_host: localhost
+elasticsearch_http_port: 9200
+elasticsearch_heap_size_min: 1g
+elasticsearch_heap_size_max: 1g
+
+# PHP CLI configuration
+
+# Full path to cli/php.ini file
+php_cli_ini_path: /etc/php/{{ php_version }}/cli/php.ini
+
+# List of PHP-CLI parameters to configure
+php_cli_ini_parameters_and_values:
+  - parameter: date.timezone
+    value: '"UTC"'
+  - parameter: display_errors
+    value: On
+  - parameter: max_execution_time
+    value: 600
+  - parameter: max_input_time
+    value: 1000
+  - parameter: memory_limit
+    value: 2G
+  - parameter: post_max_size
+    value: 48M
+  - parameter: upload_max_filesize
+    value: 32M
+
+# PHP FPM configuration
+
+# Full path to fpm/php.ini file
+php_fpm_ini_path: /etc/php/{{ php_version }}/fpm/php.ini
+
+# List of PHP-FPM parameters to configure
+php_fpm_ini_parameters_and_values:
+  - parameter: date.timezone
+    value: '"UTC"'
+  - parameter: display_errors
+    value: On
+  - parameter: post_max_size
+    value: 48M
+  - parameter: upload_max_filesize
+    value: 32M
+  - parameter: max_execution_time
+    value: 18000
+  - parameter: max_input_time
+    value: 1000
+  - parameter: memory_limit
+    value: 4G
+  - parameter: "zlib.output_compression"
+    value: "off"

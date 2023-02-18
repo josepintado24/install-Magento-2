@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+printf "\n"
+sudo service elasticsearch start
+sudo service mysql start
+# sudo service redis-server start
+sudo service php{{ php_version }}-fpm start
+sudo service nginx start
+
+UNICORN='\U1F984'
+THUMBS_UP='\U1F44D'
+
+echo -e "Done ${THUMBS_UP}"

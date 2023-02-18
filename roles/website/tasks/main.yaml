@@ -1,0 +1,19 @@
+---
+- name: Add Nginx Configuration File
+  template:
+    src: magento.j2
+    dest: "/etc/nginx/sites-available/{{ server_hostname }}"
+    owner: root
+    group: root
+    mode: "0644"
+    backup: yes
+  when: server_hostname is defined
+
+- name: Create Symbolic Link
+  file:
+    src: "/etc/nginx/sites-available/{{ server_hostname }}"
+    dest: "/etc/nginx/sites-enabled/{{ server_hostname }}"
+    owner: root
+    group: root
+    state: link
+  when: server_hostname is defined

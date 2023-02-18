@@ -1,0 +1,45 @@
+---
+- name: Install MySQL {{ mysql_version }}
+  become: true
+  become_method: sudo
+  apt:
+    name:
+      [
+        "mysql-server-{{ mysql_version }}",
+        "mysql-client-{{ mysql_version }}",
+        "python3-mysqldb",
+      ]
+
+# https://stackoverflow.com/a/63040661
+- name: "Fix MySQL won't start | warning: cannot change directory to /nonexistent"
+  command: sudo usermod -d /var/lib/mysql/ mysql
+  changed_when: false
+
+- name: Add MySQL Configuration File
+  template:
+    src: my.cnf.j2
+    dest: /etc/mysql/mysql.conf.d/my.cnf
+    owner: root
+    group: root
+    mode: "0644"
+    backup: yes
+  notify:
+    - Restart MySQL Service
+
+- name: Start MySQL Service
+  command: sudo service mysql start
+  changed_when: false
+
+- name: Set Magento Database User
+  mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_password }}"
+    priv: "*.*:ALL"
+    state: present
+  changed_when: false
+
+- name: Set Magento Database
+  mysql_db:
+    name: "{{ db_name }}"
+    state: present
+  changed_when: false

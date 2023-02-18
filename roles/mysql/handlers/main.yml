@@ -1,0 +1,6 @@
+---
+- name: Restart MySQL Service
+  command: sudo service mysql restart
+
+- name: Start MySQL Service
+  command: sudo service mysql start

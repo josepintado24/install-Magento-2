@@ -1,0 +1,20 @@
+php bin/magento setup:install \
+--base-url=http://tienda.local/ \
+--db-host=127.0.0.1 \
+--db-name=magento \
+--db-user=admin \
+--db-password=admin \
+--admin-firstname=admin \
+--admin-lastname=admin \
+--admin-email=admin@admin.com \
+--admin-user=admin \
+--admin-password=admin@123 \
+--language=en_US \
+--currency=USD \
+--timezone=America/Lima \
+--use-rewrites=1 \
+--search-engine=elasticsearch7 \
+--elasticsearch-host=localhost \
+--elasticsearch-port=9200 \
+--elasticsearch-index-prefix=magento \
+--elasticsearch-timeout=15

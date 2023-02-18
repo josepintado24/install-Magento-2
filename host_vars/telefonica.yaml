@@ -1,0 +1,6 @@
+---
+# Nginx configuration
+server_hostname: telefonica.local
+magento_dir: /home/magento/Sites/telefonica
+mage_run_type: ''
+mage_run_code: ''

@@ -1,0 +1,3 @@
+upstream fastcgi_backend {
+    server unix:/var/run/php/php{{ php_version }}-fpm.sock;
+}

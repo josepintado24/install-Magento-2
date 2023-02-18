@@ -1,0 +1,6 @@
+---
+- name: Restart Elasticsearch Service
+  command: sudo service elasticsearch restart
+
+- name: Start Elasticsearch Service
+  command: sudo service elasticsearch start

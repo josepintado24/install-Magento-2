@@ -1,0 +1,16 @@
+---
+- name: Install phpMyAdmin
+  become: true
+  become_method: sudo
+  apt:
+    name: phpmyadmin
+    install_recommends: no
+
+- name: Add phpMyAdmin Snippet File
+  template:
+    src: phpmyadmin.conf.j2
+    dest: "/etc/nginx/snippets/phpmyadmin.conf"
+    owner: root
+    group: root
+    mode: "0644"
+    backup: yes

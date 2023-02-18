@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  become: true
+  become_method: sudo
+  roles:
+    - common
+    # - git
+    - php
+    - mysql
+    - composer
+    # - magento
+    - nginx
+    - elasticsearch
+    - phpmyadmin
+    - nginx_default
+    - utils
+    # - git_config
+    - n98_magerun
+  tasks:
+    - name: Remove useless packages from the cache
+      apt:
+        autoclean: yes
+        autoremove: yes
+
+- hosts: tienda
+  become: true
+  become_method: sudo
+  roles:
+    - website
+

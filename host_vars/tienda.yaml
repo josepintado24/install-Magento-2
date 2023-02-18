@@ -1,0 +1,6 @@
+---
+# Nginx configuration
+server_hostname: tienda.local
+magento_dir: /home/magento/Sites/tienda
+mage_run_type: ''
+mage_run_code: ''

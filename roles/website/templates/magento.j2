@@ -1,0 +1,12 @@
+server {
+    listen 80;
+    server_name {{ server_hostname }};
+    set $MAGE_ROOT {{ magento_dir }};
+    {% if mage_run_type %}
+    set $MAGE_RUN_TYPE {{ mage_run_type }};
+    {% endif %}
+    {% if mage_run_code %}
+    set $MAGE_RUN_CODE {{ mage_run_code }};
+    {% endif %}
+    include {{ magento_dir }}/nginx.conf.sample;
+}

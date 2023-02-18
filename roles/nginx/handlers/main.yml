@@ -1,0 +1,6 @@
+---
+- name: Restart Nginx Service
+  command: sudo service nginx restart
+
+- name: Reload Nginx Configuration
+  command: sudo service nginx reload
